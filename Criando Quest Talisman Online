@@ -1,0 +1,113 @@
+
+
+Parte 1, abram o arquivo task.csv (local/common/table/task.csv)
+Com o arquivo, aberto, vamos entender a parte que precisamos
+
+Coluna 1: seria ( é ) o ID da quest, coloquem um ID que não existe para não dar conflito e gerar problemas futuros.
+
+Coluna 2: É o nome da quest, é o nome entre aspas, porque na verdade isso é só como referência do que é essa quest, coloque também um nome que não exista de preferência.
+
+
+Coluna 3: Não sei pra que é, mas coloca o numero 24 nela.
+
+Coluna 4: Level da quest
+
+Coluna 5: Não sei pra que é, mas deixa 0
+
+Coluna 6: Aqui é se a quest pode ser feita somente 1 vezes por player, se colocar 1 o cara só vai fazer essa quest uma vez. não é diária.
+
+Coluna 7: Aqui é se ela for diária tu coloca o número de vezes que ele pode fazer por dia
+
+Coluna 10: Aqui é se a quest vai poder ser completa em grupo (team)
+
+Coluna 11: É o mínimo de level requerido para essa quest ser listada quando falamos com o NPC, no caso eu coloquei 45
+
+Coluna 12: É o máximo de level requerido para essa quest poder ser realizada, não sei muito bem como seria, mas com certeza esta deve sumir da lista quando ultrapassar esse limite, no meu caso coloquei 99
+
+Coluna 13 ( accept_party ) Não sei bem o que significa cada entrada nessa coluna, portanto deixei como all, acredito que queira dizer que possa aceitar team
+
+Coluna 15 ( accept_req ) O que é necessário para aceitar a quest, vocês podem usar alguns comandos como:
+
+Code:
+GetTaskItemSpace >= 1 ( há espaço no inventário de items de task maior ou igual a 1 ? ) CheckTaskFinished( 120 ) , ( verifica se terminou a task de ID 120 ) 
+
+
+​
+
+Coluna 17( extra_finish_req ) Executa um comando quando estiver solicitando que a quest seja finalizada ou seja, você matou todos os mobs necessários, coletou os itens ? pois então ... na hora que clica no botãozinho lá "Acomplish"​
+
+
+​
+
+Coluna 22(kill_npc_id), valores delimitados por ; ( ponto e vírgula ) aqui você coloca os ID('s) dos npc(s) que teriam que ser matados, no caso podemos usar (4615;4840), que seriam (Golden Star Tão Guo, Super Battle Spider)​
+
+
+​
+
+Coluna 23(kill_npc_num), valores delimitados por ; ( ponto e vírgula ) aqui você coloca quantos npcs terão que ser matados, se você colocou (4615;4840) nessa coluna seria (5;10), o que seria (5 Golden Star Tão Guo, 10 Super Battle Spider) !(Caramba ... eu nunca faria essa quest, mesmo tando escrito lá que você ganha ADM quando finalizar ￼)​
+
+
+​
+
+Coluna 24(get_item_id), valores delimitados por ; ( ponto e vírgula ) quer dizer que você tem que pegar os items correspondentes aos id's que estão delimitados por ponto e vírgula, daí você pode colocar o que quiser, Evil Pith, entre outros itens que dropam na cave, mas lembre-se, se você atribuir um ID que não exista, provavelmente você verá um erro de segmentação (Segmentation Fault), e também lembre-se que se você for fazer um item específico para a quest, adicione este ao drop do mob(monstro) relacionado a quest, senão está nunca poderá ser feita.​
+
+
+​
+
+Coluna 25(get_item_num), valores delimitados por ; ( ponto e vírgula ) quantos itens terão que ser pegos ? mesmo esquema da coluna 23 !​
+
+
+​
+
+Coluna 33 , 34 (use_item_id) , valores delimitados por ; ( ponto e vírgula ) com certeza esta é a coluna que requisita que um item seja usado e a quantidade ... não testei, por isso não garanto a integridade dessa informação.​
+
+
+​
+
+Coluna 36, esta coluna é a que define o que será recebido ao finalizar a quest, vocês podem utilizar os comandos delimitados por ; ( ponto e vírgula ) como:​
+
+Code:
+
+AddExp(387200);AddNimbus(393600);AddMoney(1260000); 
+
+Isso irá adicionar 387200 de experiência, 393600 de energy, e 126 golds.
+Lembrando também que vocês podem adicionar creditos para uma reputação, tal como a de Loo's, o que seria bem massa, você fazer uma quest que mata todos os boss e alguns mobs da cave, e colocar para dar uma certa reputação lá ! , basta utilizar o comando
+
+Code:
+
+AddCredit(30,1200) 
+
+Isto irá adicionar 1200 pontos à reputação de loo's graves.
+
+Coluna 37, esta coluna é que define os itens que serão recebidos ao finalizar a quest, vocês podem colocar dessa forma:
+
+Code:
+
+AddItem(403,1);AddItem(406,1);AddItem(902,4) 
+
+Isso irá adicionar uma Large Emerald, Um Large ruby, 4 titanium stone.​
+
+Não precisa ser descritivo em algum arquivo depois esses ganhos, o próprio ( core ( núcleo ) o que chamamos de base ou rotina interna de uma linguagem de programação ) já faz isso por conta própria, que por sinal é bem legal.​
+
+
+​
+
+Na próxima coluna que seria (reward_select) é um item que deve ser escolhido ao finalizar a quest, não sei o formato de entrada, mas acredito que seja somente os comandos dos items como acima, e o core do talisman faz o resto !​
+
+
+​
+
+Bom, isso é tudo pessoal , não é em si um tutorial de como montar a quest, mas sim para entender como estas funcionam, os próximos passos para montar a quest são simples, com o ID da quest em mente ( já ia falar em mãos ) , você vai no NPC.csv e adiciona este ID na coluna 52 & 53.​
+
+
+​
+
+Agora, uma coisa que eu irei testar agora, depois edito o tópico colocando a informação completa, é que quando você cria uma quest que tem que matar mobs, e daí só adiciona ela no Npc & Task.csv, quando você mata o mob/boss, não fica done ( amarelo ) significando que este foi matado, acredito eu que seja porque você tem que procurar o ID desse boss no npc.csv e na coluna 54 ( RelatedTask ) adicionar o ID da quest.​
+
+
+​
+
+Os arquivos citados acima se encontram em local/common/table/npc.csv , task.csv e vocês tem que adicionar a descrição e nome da quest no arquivo task_desc.csv que fica localizado em local/malay_gb ( ou mars no caso do client ) /language/task_desc.csv ! Isso é tudo galera, abraços e boa sorte !
+
+Obs: retirado do fórum da vila!!
+
